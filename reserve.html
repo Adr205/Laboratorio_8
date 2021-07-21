@@ -19,7 +19,8 @@
 
     <div class="jumbotron">
       <h1 class="text-center">
-        <span class="fa fa-fire"></span> Hot Restaurant</h1>
+        <span class="fa fa-fire"></span> Hot Restaurant
+      </h1>
       <hr>
       <h2 class="text-center">Make your reservation</h2>
       <br>
@@ -85,5 +86,19 @@
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
 <script type="text/javascript">
 
+  $(".submit").on("click", () => {
+    event.preventDefault();
 
+    var newReservation = {
+      name: $("#reserve-name").val(),
+      phoneNumber: $("#reserve-phone").val().trim(),
+      email: $("#reserve-email").val().trim(),
+      uniqueId: $("#reserve-unique-id").val().trim()
+    };
+
+    $.post("/reserve", newReservation)
+    .then((data) =>{
+        $(alert("Adding your reservation..."))
+    })
+  });
 </script>

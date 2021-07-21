@@ -24,7 +24,8 @@
       <br>
 
       <div class="text-center">
-        <a href="/reserve"><button class="btn btn-lg btn-danger"><span class="fa fa-credit-card"></span> Make Reservation</button></a>
+        <a href="/reserve"><button class="btn btn-lg btn-danger"><span class="fa fa-credit-card"></span> Make
+            Reservation</button></a>
         <a href="/"><button class="btn btn-lg btn-default"><span class="fa fa-home"></span></button></a>
       </div>
     </div>
@@ -58,7 +59,8 @@
     <footer class="footer mt-4">
       <div class="container">
         <p>Control Panel</p>
-        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API
+        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a
+            href="/api/waitlist">API
             Wait List</a>
       </div>
     </footer>
@@ -71,8 +73,62 @@
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS LOADED FROM OUR SERVER -->
 <script type="text/javascript">
 
+  function getTables() {
+    $.ajax({ url: "/api/tables", method: "GET" })
+      .then((tables) => {
+        // console.log(tables);
 
+        for (var i = 0; i < tables.length; i++) {
+          var tList = $("#tableList");
 
+          var newTable = $("<li class='list-group-item mt-4'>");
+          newTable.append(
+            $("<h2>").text(`Table # ${i + 1}`),
+            $("<h2>").text(`ID:  ${tables[i].uniqueId}`),
+            $("<h2>").text(`Name:  ${tables[i].name}`),
+            $("<h2>").text(`Email: ${tables[i].email}`),
+            $("<h2>").text(`Phone: ${tables[i].phoneNumber}`)
+          )
+          tList.append(newTable);
+        }
+      })
+  }
+  function getWTables() {
+    $.ajax({ url: "/api/waitlist", method: "GET" })
+      .then((tables) => {
+        // console.log(tables);
+
+        for (var i = 0; i < tables.length; i++) {
+          var wList = $("#waitList");
+
+          var newTable = $("<li class='list-group-item mt-4'>");
+          newTable.append(
+            $("<h2>").text(`Table # ${i + 1}`),
+            $("<h2>").text(`ID:  ${tables[i].uniqueId}`),
+            $("<h2>").text(`Name:  ${tables[i].name}`),
+            $("<h2>").text(`Email: ${tables[i].email}`),
+            $("<h2>").text(`Phone: ${tables[i].phoneNumber}`)
+          )
+          wList.append(newTable);
+        }
+      })
+  }
+
+  $("#clear").on("click", () => {
+    alert("Clearing...");
+
+    // Clear the tables on the server and then empty the elements on the client
+    $.ajax({ url: "/api/clear", method: "POST" }).then(function () {
+      $("#waitList").empty();
+      $("#tableList").empty();
+      // console.log($("#waitList").val())
+      // console.log($("#tableList").val())
+
+    });
+  });
+
+  getTables();
+  getWTables();
 
 </script>
 
